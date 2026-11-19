@@ -1,0 +1,52 @@
+configure terminal
+hostname Cnt-Sw
+! [LAB CREDENTIAL OR SECRET DIRECTIVE REDACTED]
+ip domain-name cisco.com
+! [LAB CREDENTIAL OR SECRET DIRECTIVE REDACTED]
+vlan 15
+name Servers
+vlan 30
+name PCs
+vlan 45
+name Native
+vlan 60
+name Management
+exit
+interface range FastEthernet0/1-10
+switchport mode access
+switchport access vlan 30
+interface range FastEthernet0/11-20
+switchport mode access
+switchport access vlan 15
+interface range FastEthernet0/21-24
+switchport mode access
+interface GigabitEthernet0/1
+switchport mode trunk
+switchport trunk native vlan 45
+interface Vlan60
+ip address 10.10.10.146 255.255.255.240
+no shutdown
+exit
+ip default-gateway 10.10.10.145
+interface FastEthernet0/1
+switchport port-security
+switchport port-security maximum 2
+switchport port-security mac-address sticky
+switchport port-security violation restrict
+no shutdown
+interface range FastEthernet0/2-10,FastEthernet0/12-24,GigabitEthernet0/2
+shutdown
+exit
+line vty 0 15
+login local
+transport input ssh
+exit
+! [LAB CREDENTIAL OR SECRET DIRECTIVE REDACTED]
+1024
+ip ssh version 2
+ip ssh authentication-retries 2
+ip ssh time-out 60
+end
+copy running-config startup-config
+
+

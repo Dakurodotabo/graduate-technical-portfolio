@@ -1,0 +1,15 @@
+COMPANY TASK
+PCA and PCB addressing was already correct. No host IP changes were required.
+
+LAB 2
+Select DHCP in Desktop > IP Configuration on all four PCs.
+Observed leases: PC1 172.31.10.11/27, PC2 172.31.20.11/28, PC3 172.31.30.11/25, PC4 172.31.40.11/26.
+Gateway .1 in each subnet; DNS 209.165.201.14.
+
+LAB 3 GENERATED INSTANCE
+NetAdmin: select DHCP; observed 10.10.10.194/26, gateway 10.10.10.193.
+NA-East: retain 10.10.10.10/27; correct gateway from 172.16.15.65 to 10.10.10.1.
+NA-West: retain 10.10.10.40/27; correct gateway from 172.16.15.129 to 10.10.10.33.
+File Server: retain 10.10.10.162/27; correct gateway from 172.16.15.17 to 10.10.10.161.
+Lab 3 specifies no DNS server; preserve 0.0.0.0 for these hosts and use IP based tests.
+Gateway corrections were made through Desktop > IP Configuration, then confirmed using ipconfig and repeated reachability tests.

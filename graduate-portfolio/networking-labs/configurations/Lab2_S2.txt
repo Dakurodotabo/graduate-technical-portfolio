@@ -1,0 +1,31 @@
+enable
+configure terminal
+vlan 10
+name Sales
+vlan 20
+name Production
+vlan 30
+name Marketing
+vlan 40
+name HR
+exit
+interface range FastEthernet0/1-4
+switchport mode trunk
+interface range FastEthernet0/5-9
+switchport mode access
+switchport access vlan 10
+interface range FastEthernet0/10-14
+switchport mode access
+switchport access vlan 20
+interface range FastEthernet0/15-19
+switchport mode access
+switchport access vlan 30
+interface range FastEthernet0/20-24
+switchport mode access
+switchport access vlan 40
+interface range GigabitEthernet0/1-2
+switchport mode access
+end
+copy running-config startup-config
+
+

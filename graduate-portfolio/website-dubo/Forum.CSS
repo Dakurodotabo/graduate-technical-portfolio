@@ -1,0 +1,169 @@
+.main-nav ul {
+    list-style: none;
+    display: flex;
+    gap: 1.5rem;
+    align-items: center; /* Vertically center nav links */
+}
+
+.user-icon {
+    max-width: 40px;
+    max-height: 40px;
+    width: auto;
+    height: auto;
+    border-radius: 50%;
+}
+
+main {
+    padding: 2rem;
+    padding-bottom: 8rem; /* Increased bottom padding to ensure delete button visibility */
+    max-width: 800px;
+    margin: 4rem auto 6rem auto; /* margin top for header space, bottom for footer */
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    max-height: 80vh;
+    overflow-y: auto;
+}
+h1 {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+#post-creation {
+    margin-bottom: 2rem;
+}
+#post-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+#content-upload-container {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+}
+#post-form input[type="text"] {
+    padding: 0.5rem;
+    font-size: 1rem;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    font-family: inherit;
+}
+#post-form textarea {
+    resize: vertical;
+    min-height: 80px;
+    padding: 0.5rem;
+    font-size: 1rem;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    font-family: inherit;
+    flex-grow: 1;
+}
+.upload-label {
+    cursor: pointer;
+    font-size: 1.5rem;
+    padding: 0.25rem 0.5rem;
+    user-select: none;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #eee;
+    transition: background-color 0.3s;
+}
+.upload-label:hover {
+    background-color: #ddd;
+}
+.preview-image {
+    max-width: 100px;
+    max-height: 100px;
+    margin-right: 0.5rem;
+    margin-top: 0.5rem;
+    border-radius: 4px;
+    object-fit: cover;
+}
+#post-form button {
+    align-self: flex-end;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+#post-form button:hover {
+    background-color: #555;
+}
+#posts {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    /* Remove max-height to allow full height and scrolling of page */
+    /* max-height: 400px; */
+    overflow-y: auto;
+    padding-right: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+.post {
+    padding: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #fff;
+    white-space: pre-wrap; /* preserve line breaks */
+}
+.post-title {
+    font-weight: bold;
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+}
+.post-user {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 0.5rem;
+}
+.post-content img, .post-content video {
+    max-width: 100%;
+    max-height: 300px; /* Limit max height to prevent images from being too tall */
+    border-radius: 8px;
+    margin-top: 0.5rem;
+    object-fit: contain; /* Maintain aspect ratio and contain within max height */
+    display: block;
+}
+
+.post-content {
+    max-height: 300px; /* Limit max height of post content */
+    overflow-y: auto; /* Enable vertical scrolling if content overflows */
+}
+.post-content a {
+    color: #333;
+    text-decoration: underline;
+    word-break: break-word;
+}
+
+/* Footer social media styles */
+.social-links {
+    display: flex;
+    gap: 1rem;
+}
+
+.social-links li a {
+    color: #eee;
+    text-decoration: none;
+    background-color: #444;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-weight: bold;
+    transition: background-color 0.3s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 80px;
+    height: 80px;
+}
+
+.social-links li a:hover {
+    filter: brightness(0.8);
+    color: #fff;
+}

@@ -1,0 +1,2 @@
+# Enterprise Cisco networking labs
+Selected simulated Cisco IOS configuration examples (2026). Exercises included access control lists, VLANs, DHCP, SSH and troubleshooting an incorrect allowed-VLAN trunk configuration plus missing management SVI. The 2026 lab materials were produced with AI assistance and reviewed for portfolio learning. Do not treat the simulation as proof of production network experience. Simulator binaries and private evidence remain in the local archive.

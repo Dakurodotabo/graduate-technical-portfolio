@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Booking</title>
+        <link rel="stylesheet" href="Booking.CSS" />
+    </head>
+<body>
+    <header class="banner">
+        <a href="Home.HTML" class="logo-link">
+            <img src="./Banner PNG.png" alt="Home" class="logo" />
+        </a>
+        <nav class="main-nav">
+            <ul>
+                <li><a href="Home.HTML">Home</a></li>
+                <li><a href="About.HTML">About</a></li>
+                <li><a href="Booking.HTML">Booking</a></li>
+                <li><a href="Forum.HTML">Forum</a></li>
+                <li class="user-dropdown">
+<img src="uploads/Default Profile.jpg" alt="User" class="user-icon" id="user-icon" />
+                    <div class="dropdown-content" id="dropdown-content">
+                        <a href="Login.HTML" id="login-link">Login</a>
+                        <a href="Signup.HTML" id="signup-link">Sign Up</a>
+                        <a href="Profile.HTML" id="profile-link">Profile</a>
+                        <a href="#" id="logout-link" style="display:none">Logout</a>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+        <script>
+          document.addEventListener('DOMContentLoaded', () => {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            const profileLink = document.getElementById('profile-link');
+            const logoutLink = document.getElementById('logout-link');
+            const loginLink = document.getElementById('login-link');
+            const signupLink = document.getElementById('signup-link');
+            const userIcon = document.getElementById('user-icon');
+            const dropdownContent = document.getElementById('dropdown-content');
+
+            if (currentUser) {
+              profileLink.style.display = 'block';
+              logoutLink.style.display = 'block';
+              loginLink.style.display = 'none';
+              signupLink.style.display = 'none';
+              if (currentUser.profile_picture) {
+                userIcon.src = currentUser.profile_picture;
+              } else {
+                userIcon.src = 'uploads/Default Profile.jpg';
+              }
+            } else {
+              profileLink.style.display = 'none';
+              logoutLink.style.display = 'none';
+              loginLink.style.display = 'block';
+              signupLink.style.display = 'block';
+              userIcon.src = 'uploads/Default Profile.jpg';
+            }
+
+            // Toggle dropdown on user icon click
+            userIcon.addEventListener('click', () => {
+              if (dropdownContent.style.display === 'block') {
+                dropdownContent.style.display = 'none';
+              } else {
+                dropdownContent.style.display = 'block';
+              }
+            });
+
+            // Close dropdown if clicked outside
+            document.addEventListener('click', (event) => {
+              if (!userIcon.contains(event.target) && !dropdownContent.contains(event.target)) {
+                dropdownContent.style.display = 'none';
+              }
+            });
+          });
+        </script>
+    </header>
+    <main>
+        <h1>Book Your Martial Arts Lesson</h1>
+        <p>Please select your preferred class and schedule your lesson below.</p>
+
+        <section id="membership-options">
+            <h2>Membership Options</h2>
+            <div class="class-list">
+                <div class="class-item" data-class-id="basic" data-price="25">
+                    <h3>Basic</h3>
+                    <p>1 martial art - 2 sessions per week (Monday & Wednesday)</p>
+                    <p>Fee: £25.00 monthly</p>
+                    <button class="add-to-cart-btn">Add to Cart</button>
+                </div>
+                <div class="class-item" data-class-id="intermediate" data-price="35">
+                    <h3>Intermediate</h3>
+                    <p>1 martial art - 3 sessions per week (Monday, Wednesday & Friday)</p>
+                    <p>Fee: £35.00 monthly</p>
+                    <button class="add-to-cart-btn">Add to Cart</button>
+                </div>
+                <div class="class-item" data-class-id="advanced" data-price="45">
+                    <h3>Advanced</h3>
+                    <p>Any 2 martial arts - 5 sessions per week (Monday to Friday)</p>
+                    <p>Fee: £45.00 monthly</p>
+                    <button class="add-to-cart-btn">Add to Cart</button>
+                </div>
+                <div class="class-item" data-class-id="elite" data-price="60">
+                    <h3>Elite</h3>
+                    <p>Unlimited classes (Monday to Sunday)</p>
+                    <p>Fee: £60.00 monthly</p>
+                    <button class="add-to-cart-btn">Add to Cart</button>
+                </div>
+                <div class="class-item" data-class-id="private-tuition" data-price="15">
+                    <h3>Private Martial Arts Tuition</h3>
+                    <p>Per hour</p>
+                    <p>Fee: £15.00 hourly</p>
+                    <label for="private-hours">Select hours (max 10):</label>
+                    <input type="number" id="private-hours" name="private-hours" min="1" max="10" value="1" />
+                    <fieldset>
+                        <legend>Select available days</legend>
+                        <label><input type="checkbox" name="private-day" value="Tuesday" /> Tuesday</label>
+                        <label><input type="checkbox" name="private-day" value="Wednesday" /> Wednesday</label>
+                        <label><input type="checkbox" name="private-day" value="Thursday" /> Thursday</label>
+                        <label><input type="checkbox" name="private-day" value="Saturday" /> Saturday</label>
+                        <label><input type="checkbox" name="private-day" value="Sunday" /> Sunday</label>
+                    </fieldset>
+                    <button class="add-to-cart-btn">Add to Cart</button>
+                </div>
+                <div class="class-item" data-class-id="junior-membership" data-price="25">
+                    <h3>Junior Membership</h3>
+                    <p>Can attend all-kids martial arts sessions</p>
+                    <p>Fee: £25.00 monthly</p>
+                    <button class="add-to-cart-btn">Add to Cart</button>
+                </div>
+                <div class="class-item" data-class-id="test-it-out" data-price="0">
+                    <h3>Test it out</h3>
+                    <p>A free try out for the entire week. You can only use it once.</p>
+                    <p>Fee: Free</p>
+                    <button class="add-to-cart-btn">Add to Cart</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="specialist-courses">
+            <h2>Specialist Courses</h2>
+            <div class="class-list">
+                <div class="class-item" data-class-id="self-defence" data-price="180">
+                    <h3>Six-week Beginners' Self-defence Course</h3>
+                    <p>2 x 1-hour sessions per week</p>
+                    <p>Fee: £180.00</p>
+                    <button class="add-to-cart-btn">Add to Cart</button>
+                </div>
+                <div class="class-item" data-class-id="fitness-room" data-price="6">
+                    <h3>Use of Fitness Room</h3>
+                    <p>Paid in card or cash in person</p>
+                </div>
+                <div class="class-item" data-class-id="personal-fitness" data-price="35">
+                    <h3>Personal Fitness Training</h3>
+                    <p>Per hour</p>
+                    <p>Fee: £35.00</p>
+                    <label for="fitness-hours">Select hours (max 10):</label>
+                    <input type="number" id="fitness-hours" name="fitness-hours" min="1" max="10" value="1" />
+                    <fieldset>
+                        <legend>Select available days</legend>
+                        <label><input type="checkbox" name="fitness-day" value="Monday" /> Monday</label>
+                        <label><input type="checkbox" name="fitness-day" value="Tuesday" /> Tuesday</label>
+                        <label><input type="checkbox" name="fitness-day" value="Wednesday" /> Wednesday</label>
+                        <label><input type="checkbox" name="fitness-day" value="Thursday" /> Thursday</label>
+                        <label><input type="checkbox" name="fitness-day" value="Friday" /> Friday</label>
+                    </fieldset>
+                    <button class="add-to-cart-btn">Add to Cart</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="timetable">
+            <h2>Timetable</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Time</th>
+                        <th>Monday</th>
+                        <th>Tuesday</th>
+                        <th>Wednesday</th>
+                        <th>Thursday</th>
+                        <th>Friday</th>
+                        <th>Saturday</th>
+                        <th>Sunday</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>06:00-07:30</td>
+                        <td>Jiu-jitsu</td>
+                        <td>Karate</td>
+                        <td>Judo</td>
+                        <td>Jiu-jitsu</td>
+                        <td>Muay Thai</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>08:00-10:00</td>
+                        <td>Muay Thai</td>
+                        <td>Private tuition</td>
+                        <td>Private tuition</td>
+                        <td>Private tuition</td>
+                        <td>Jiu-jitsu</td>
+                        <td>Private tuition</td>
+                        <td>Private tuition</td>
+                    </tr>
+                    <tr>
+                        <td>10:30-12:00</td>
+                        <td>Private tuition</td>
+                        <td>Private tuition</td>
+                        <td>Private tuition</td>
+                        <td>Private tuition</td>
+                        <td>Private tuition</td>
+                        <td>Judo</td>
+                        <td>Karate</td>
+                    </tr>
+                    <tr>
+                        <td>13:00-14:30</td>
+                        <td>Open mat/ personal practice</td>
+                        <td>Open mat/ personal practice</td>
+                        <td>Open mat/ personal practice</td>
+                        <td>Open mat/ personal practice</td>
+                        <td>Open mat/ personal practice</td>
+                        <td>Karate</td>
+                        <td>Judo</td>
+                    </tr>
+                    <tr>
+                        <td>15:00-17:00</td>
+                        <td>Kids Jiu-jitsu</td>
+                        <td>Kids Judo</td>
+                        <td>Kids Karate</td>
+                        <td>Kids Jiu-jitsu</td>
+                        <td>Kids Judo</td>
+                        <td>Muay Thai</td>
+                        <td>Jiu-jitsu</td>
+                    </tr>
+                    <tr>
+                        <td>17:30-19:00</td>
+                        <td>Karate</td>
+                        <td>Muay Thai</td>
+                        <td>Judo</td>
+                        <td>Jiu-jitsu</td>
+                        <td>Muay Thai</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>19:00-21:00</td>
+                        <td>Jiu-jitsu</td>
+                        <td>Judo</td>
+                        <td>Jiu-jitsu</td>
+                        <td>Karate</td>
+                        <td></td>
+                        <td>Private tuition</td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="cart">
+            <h2>Your Cart</h2>
+            <ul id="cart-items">
+                <!-- Cart items will appear here -->
+            </ul>
+            <p id="cart-total">Total: $0</p>
+            <button id="checkout-btn" disabled>Proceed to Checkout</button>
+        </section>
+
+        <section id="checkout" style="display:none;">
+            <h2>Checkout</h2>
+            <form id="checkout-form">
+                <label for="name">Full Name:</label>
+                <input type="text" id="name" name="name" required />
+
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required />
+
+                <fieldset>
+                    <legend>Payment Details</legend>
+
+                    <label for="card-number">Card Number:</label>
+                    <input type="text" id="card-number" name="card-number" placeholder="1234 5678 9012 3456" maxlength="19" required />
+
+                    <label for="expiry-date">Expiry Date (MM/YY):</label>
+                    <input type="text" id="expiry-date" name="expiry-date" placeholder="MM/YY" maxlength="5" required />
+
+                    <label for="cvv">CVV:</label>
+                    <input type="text" id="cvv" name="cvv" placeholder="123" maxlength="4" required />
+                </fieldset>
+
+                <p id="payment-term"></p>
+
+                <button type="submit">Complete Booking</button>
+            </form>
+        </section>
+
+        <section id="confirmation" style="display:none;">
+            <h2>Thank you for your booking!</h2>
+            <p>We have received your booking and will contact you shortly.</p>
+        </section>
+
+    </main>
+    <script src="auth.js"></script>
+    <footer class="site-footer">
+        <div class="footer-container">
+            <div class="footer-section contact-info">
+                <h3>Contact Us</h3>
+                <p><span class="label">Phone:</span> <a href="tel:+1234567890">+44 2734 293655</a></p>
+                <p><span class="label">Email:</span> <a href="mailto:info@example.com">DoBu@gmail.co.uk</a></p>
+            </div>
+            <div class="footer-section page-links">
+                <h3>Pages</h3>
+                <ul>
+                    <li><a href="Home.HTML">Home</a></li>
+                    <li><a href="About.HTML">About</a></li>
+                    <li><a href="Booking.HTML">Booking</a></li>
+                    <li><a href="Forum.HTML">Forum</a></li>
+                </ul>
+            </div>
+            <div class="footer-section social-media">
+                <h3>Follow Us</h3>
+                <ul class="social-links">
+                    <li><a href="https://facebook.com" target="_blank" rel="noopener noreferrer"><img src="uploads/Fakebook.png?v=1" alt="Facebook Logo" class="social-logo" /></a></li>
+                    <li><a href="https://twitter.com" target="_blank" rel="noopener noreferrer"><img src="uploads/X.webp?v=1" alt="Twitter Logo" class="social-logo" /></a></li>
+                    <li><a href="https://instagram.com" target="_blank" rel="noopener noreferrer"><img src="uploads/instagram.webp?v=1" alt="Instagram Logo" class="social-logo" /></a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

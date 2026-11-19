@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home</title>
+    <link rel="stylesheet" href="Home.CSS" />
+</head>
+<body>
+    <header class="banner">
+        <a href="Home.HTML" class="logo-link">
+            <img src="./Banner PNG.png" alt="Home" class="logo" />
+        </a>
+        <nav class="main-nav">
+            <ul>
+                <li><a href="Home.HTML">Home</a></li>
+                <li><a href="About.HTML">About</a></li>
+                <li><a href="Booking.HTML">Booking</a></li>
+                <li><a href="Forum.HTML">Forum</a></li>
+                <li class="user-dropdown">
+<img src="uploads/Default Profile.jpg" alt="User" class="user-icon" id="user-icon" />
+                    <div class="dropdown-content" id="dropdown-content">
+                        <a href="Login.HTML" id="login-link">Login</a>
+                        <a href="Signup.HTML" id="signup-link">Sign Up</a>
+                        <a href="Profile.HTML" id="profile-link">Profile</a>
+                        <a href="#" id="logout-link" style="display:none">Logout</a>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+        <script>
+          document.addEventListener("DOMContentLoaded", () => {
+            const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+            const profileLink = document.getElementById("profile-link");
+            const logoutLink = document.getElementById("logout-link");
+            const loginLink = document.getElementById("login-link");
+            const signupLink = document.getElementById("signup-link");
+            const userIcon = document.getElementById("user-icon");
+            const dropdownContent = document.getElementById("dropdown-content");
+
+            if (currentUser) {
+              profileLink.style.display = "block";
+              logoutLink.style.display = "block";
+              loginLink.style.display = "none";
+              signupLink.style.display = "none";
+              if (currentUser.profile_picture) {
+                userIcon.src = currentUser.profile_picture;
+              } else {
+                userIcon.src = "uploads/Default Profile.jpg";
+              }
+            } else {
+              profileLink.style.display = "none";
+              logoutLink.style.display = "none";
+              loginLink.style.display = "block";
+              signupLink.style.display = "block";
+              userIcon.src = "uploads/Default Profile.jpg";
+            }
+
+            // Toggle dropdown on user icon click
+            userIcon.addEventListener("click", () => {
+              if (dropdownContent.style.display === "block") {
+                dropdownContent.style.display = "none";
+              } else {
+                dropdownContent.style.display = "block";
+              }
+            });
+
+            // Close dropdown if clicked outside
+            document.addEventListener("click", (event) => {
+              if (
+                !userIcon.contains(event.target) &&
+                !dropdownContent.contains(event.target)
+              ) {
+                dropdownContent.style.display = "none";
+              }
+            });
+          });
+        </script>
+        <script src="auth.js"></script>
+    </header>
+    <main>
+        <section class="hero">
+            <h1>Welcome to DoBu Martial Arts</h1>
+            <p>Master the art of self-defense and discipline with our expert instructors.</p>
+        </section>
+        <section class="classes-overview">
+            <h2>Our Classes</h2>
+            <div class="class-list">
+                <article class="class-item">
+                    <h3>Karate</h3>
+                    <p>Learn traditional Karate techniques to build strength, agility, and confidence.</p>
+                </article>
+                <article class="class-item">
+                    <h3>Taekwondo</h3>
+                    <p>Focus on high kicks and fast movements in our dynamic Taekwondo classes.</p>
+                </article>
+                <article class="class-item">
+                    <h3>Jiu-Jitsu</h3>
+                    <p>Master ground fighting and submission holds with our Jiu-Jitsu program.</p>
+                </article>
+            </div>
+        </section>
+        <section class="instructors">
+            <h2>Meet Our Instructors</h2>
+            <div class="instructor-list">
+                <article class="instructor">
+                    <h3>Mauricio Gomez</h3>
+                    <p>Gym owner / Head Martial Arts Coach</p>
+                    <p>Coaches in all martial arts</p>
+                    <p>4th Dan Blackbelt Judo</p>
+                    <p>3rd Dan Blackbelt Jiu-Jitsu</p>
+                    <p>1st Dan Blackbelt Karate</p>
+                    <p>Accredited Muay Thai Coach</p>
+                </article>
+                <article class="instructor">
+                    <h3>Sarah Nova</h3>
+                    <p>Assistant Martial Arts Coach</p>
+                    <p>5th Dan Karate</p>
+                </article>
+                <article class="instructor">
+                    <h3>Guy Victory</h3>
+                    <p>Assistant Martial Arts Coach</p>
+                    <p>2nd Dan Blackbelt Jiu-Jitsu</p>
+                    <p>1st Dan Blackbelt Judo</p>
+                </article>
+                <article class="instructor">
+                    <h3>Morris Davis</h3>
+                    <p>Assistant Martial Arts Coach</p>
+                    <p>Accredited Muay Thai Coach</p>
+                    <p>3rd Dan Blackbelt Karate</p>
+                </article>
+                <article class="instructor">
+                    <h3>Traci Santiago</h3>
+                    <p>Fitness Coach</p>
+                    <p>BSc in Sports Science</p>
+                    <p>Qualified in Health and Nutrition</p>
+                    <p>Specialises in devising strength and conditioning programs for combat athletes</p>
+                </article>
+                <article class="instructor">
+                    <h3>Harpreet Kaur</h3>
+                    <p>Fitness Coach</p>
+                    <p>BSc in Physiotherapy</p>
+                    <p>MSc in Sports Science</p>
+                </article>
+            </div>
+        </section>
+        <section class="testimonials">
+            <h2>What Our Students Say</h2>
+            <blockquote>
+                "Joining DoBu Martial Arts has changed my life. The instructors are amazing and the community is supportive."
+                <footer>- Sarah K.</footer>
+            </blockquote>
+            <blockquote>
+                "The classes are challenging but rewarding. I feel stronger and more confident every day."
+                <footer>- David M.</footer>
+            </blockquote>
+        </section>
+        <section class="booking-cta">
+            <a href="Booking.HTML" class="btn-primary">Book Your Lesson Now</a>
+        </section>
+    </main>
+    <footer class="site-footer">
+        <div class="footer-container">
+            <div class="footer-section contact-info">
+                <h3>Contact Us</h3>
+                <p><span class="label">Phone:</span> <a href="tel:+1234567890">+44 2734 293655</a></p>
+                <p><span class="label">Email:</span> <a href="mailto:info@example.com">DoBu@gmail.co.uk</a></p>
+            </div>
+            <div class="footer-section page-links">
+                <h3>Pages</h3>
+                <ul>
+                    <li><a href="Home.HTML">Home</a></li>
+                    <li><a href="About.HTML">About</a></li>
+                    <li><a href="Booking.HTML">Booking</a></li>
+                    <li><a href="Forum.HTML">Forum</a></li>
+                </ul>
+            </div>
+            <div class="footer-section social-media">
+                <h3>Follow Us</h3>
+                <ul class="social-links">
+                    <li><a href="https://facebook.com" target="_blank" rel="noopener noreferrer"><img src="uploads/Fakebook.png?v=1" alt="Facebook Logo" class="social-logo" /></a></li>
+                    <li><a href="https://twitter.com" target="_blank" rel="noopener noreferrer"><img src="uploads/X.webp?v=1" alt="Twitter Logo" class="social-logo" /></a></li>
+                    <li><a href="https://instagram.com" target="_blank" rel="noopener noreferrer"><img src="uploads/instagram.webp?v=1" alt="Instagram Logo" class="social-logo" /></a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

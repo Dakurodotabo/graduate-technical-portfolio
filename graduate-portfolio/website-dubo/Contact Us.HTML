@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact Us</title>
+    <link rel="stylesheet" href="Home_fixed.CSS" />
+</head>
+<body>
+    <header class="banner">
+        <a href="Home.HTML" class="logo-link">
+            <img src="./Banner PNG.png" alt="Home" class="logo" />
+        </a>
+        <nav class="main-nav">
+            <ul>
+                <li><a href="Home.HTML">Home</a></li>
+                <li><a href="About.HTML">About</a></li>
+                <li><a href="Prices.HTML">Prices</a></li>
+                <li><a href="Schedule.HTML">Schedule</a></li>
+                <li><a href="Timetable.HTML">Timetable</a></li>
+                <li class="user-dropdown">
+                    <img src="user-icon.png" alt="User" class="user-icon" id="user-icon" />
+                    <div class="dropdown-content" id="dropdown-content">
+                        <a href="Login.HTML" id="login-link">Login</a>
+                        <a href="Signup.HTML" id="signup-link">Sign Up</a>
+                        <a href="Profile.HTML" id="profile-link">Profile</a>
+                        <a href="#" id="logout-link" style="display:none">Logout</a>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+        <script>
+          document.addEventListener('DOMContentLoaded', () => {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            const profileLink = document.getElementById('profile-link');
+            const logoutLink = document.getElementById('logout-link');
+            const loginLink = document.getElementById('login-link');
+            const signupLink = document.getElementById('signup-link');
+            const userIcon = document.getElementById('user-icon');
+            const dropdownContent = document.getElementById('dropdown-content');
+
+            if (currentUser) {
+              profileLink.style.display = 'block';
+              logoutLink.style.display = 'block';
+              loginLink.style.display = 'none';
+              signupLink.style.display = 'none';
+            } else {
+              profileLink.style.display = 'none';
+              logoutLink.style.display = 'none';
+              loginLink.style.display = 'block';
+              signupLink.style.display = 'block';
+            }
+
+            // Toggle dropdown on user icon click
+            userIcon.addEventListener('click', () => {
+              if (dropdownContent.style.display === 'block') {
+                dropdownContent.style.display = 'none';
+              } else {
+                dropdownContent.style.display = 'block';
+              }
+            });
+
+            // Close dropdown if clicked outside
+            document.addEventListener('click', (event) => {
+              if (!userIcon.contains(event.target) && !dropdownContent.contains(event.target)) {
+                dropdownContent.style.display = 'none';
+              }
+            });
+          });
+        </script>
+    </header>
+    <main>
+        <!-- Page content will go here -->
+    </main>
+    <footer class="site-footer">
+        <div class="footer-container">
+            <div class="footer-section contact-info">
+                <h3>Contact Us</h3>
+                <p><span class="label">Phone:</span> <a href="tel:+1234567890">+1 234 567 890</a></p>
+                <p><span class="label">Email:</span> <a href="mailto:info@example.com">info@example.com</a></p>
+            </div>
+            <div class="footer-section page-links">
+                <h3>Pages</h3>
+                <ul>
+                    <li><a href="Home.HTML">Home</a></li>
+                    <li><a href="About.HTML">About</a></li>
+                    <li><a href="Prices.HTML">Prices</a></li>
+                    <li><a href="Schedule.HTML">Schedule</a></li>
+                    <li><a href="Timetable.HTML">Timetable</a></li>
+                </ul>
+            </div>
+            <div class="footer-section social-media">
+                <h3>Follow Us</h3>
+                <ul class="social-links">
+                    <li><a href="https://facebook.com" target="_blank" rel="noopener noreferrer"><img src="" alt="Facebook Logo" class="social-logo" /></a></li>
+                    <li><a href="https://twitter.com" target="_blank" rel="noopener noreferrer"><img src="" alt="Twitter Logo" class="social-logo" /></a></li>
+                    <li><a href="https://instagram.com" target="_blank" rel="noopener noreferrer"><img src="" alt="Instagram Logo" class="social-logo" /></a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

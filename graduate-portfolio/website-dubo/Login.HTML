@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Login</title>
+        <link rel="stylesheet" href="./Home.CSS" />
+        <link rel="stylesheet" href="footer-styles.css" />
+        <link rel="stylesheet" href="Login.CSS" />
+
+    </head>
+<body>
+    <header class="banner">
+        <a href="Home.HTML" class="logo-link">
+            <img src="./Banner PNG.png" alt="Home" class="logo" />
+        </a>
+        <nav class="main-nav">
+            <ul>
+                <li><a href="Home.HTML">Home</a></li>
+                <li><a href="About.HTML">About</a></li>
+                <li><a href="Booking.HTML">Booking</a></li>
+                <li><a href="Forum.HTML">Forum</a></li>
+<li class="user-dropdown">
+<img src="uploads/Default Profile.jpg" alt="User" class="user-icon" id="user-icon" />
+    <div class="dropdown-content" id="dropdown-content">
+        <a href="Login.HTML" id="login-link">Login</a>
+        <a href="Signup.HTML" id="signup-link">Sign Up</a>
+        <a href="Profile.HTML" id="profile-link">Profile</a>
+        <button id="logout-button" style="display:none">Logout</button>
+    </div>
+</li>
+            </ul>
+        </nav>
+        <script>
+          document.addEventListener('DOMContentLoaded', () => {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            const profileLink = document.getElementById('profile-link');
+            const logoutLink = document.getElementById('logout-button');
+            const loginLink = document.getElementById('login-link');
+            const signupLink = document.getElementById('signup-link');
+            const userIcon = document.getElementById('user-icon');
+            const dropdownContent = document.getElementById('dropdown-content');
+
+            if (currentUser) {
+              profileLink.style.display = 'block';
+              logoutLink.style.display = 'block';
+              loginLink.style.display = 'none';
+              signupLink.style.display = 'none';
+              if (currentUser.profile_picture) {
+                userIcon.src = currentUser.profile_picture;
+              } else {
+                userIcon.src = 'uploads/Default Profile.jpg';
+              }
+            } else {
+              profileLink.style.display = 'none';
+              logoutLink.style.display = 'none';
+              loginLink.style.display = 'block';
+              signupLink.style.display = 'block';
+              userIcon.src = 'uploads/Default Profile.jpg';
+            }
+
+            // Toggle dropdown on user icon click (disable hover)
+            userIcon.addEventListener('click', (event) => {
+              event.preventDefault();
+              event.stopPropagation();
+              if (dropdownContent.style.display === 'block') {
+                dropdownContent.style.display = 'none';
+              } else {
+                dropdownContent.style.display = 'block';
+              }
+            });
+
+            // Close dropdown if clicked outside
+            document.addEventListener('click', (event) => {
+              if (!userIcon.contains(event.target) && !dropdownContent.contains(event.target)) {
+                dropdownContent.style.display = 'none';
+              }
+            });
+          });
+        </script>
+        <script src="auth.js"></script>
+    </header>
+    <main>
+        <form class="login-form" id="login-form">
+            <h2>Login</h2>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" required />
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" required />
+            </div>
+            <button type="submit" class="submit-btn">Login</button>
+            <div class="error" id="error-message"></div>
+        </form>
+    </main>
+    <footer class="site-footer">
+        <div class="footer-container">
+            <div class="footer-section contact-info">
+                <h3>Contact Us</h3>
+                <p><span class="label">Phone:</span> <a href="tel:+1234567890">+44 2734 293655</a></p>
+                <p><span class="label">Email:</span> <a href="mailto:info@example.com">DoBu@gmail.co.uk</a></p>
+            </div>
+            <div class="footer-section page-links">
+                <h3>Pages</h3>
+                <ul>
+                    <li><a href="Home.HTML">Home</a></li>
+                    <li><a href="About.HTML">About</a></li>
+                    <li><a href="Booking.HTML">Booking</a></li>
+                </ul>
+            </div>
+            <div class="footer-section social-media">
+                <h3>Follow Us</h3>
+                <ul class="social-links">
+                    <li><a href="https://facebook.com" target="_blank" rel="noopener noreferrer"><img src="uploads/Fakebook.png?v=1" alt="Facebook Logo" class="social-logo" /></a></li>
+                    <li><a href="https://twitter.com" target="_blank" rel="noopener noreferrer"><img src="uploads/X.webp?v=1" alt="Twitter Logo" class="social-logo" /></a></li>
+                    <li><a href="https://instagram.com" target="_blank" rel="noopener noreferrer"><img src="uploads/instagram.webp?v=1" alt="Instagram Logo" class="social-logo" /></a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

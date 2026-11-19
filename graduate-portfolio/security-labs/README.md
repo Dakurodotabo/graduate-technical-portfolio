@@ -1,0 +1,2 @@
+# Virtual-machine vulnerability-management laboratory
+Isolated Kali Linux and Ubuntu/Docker environment with deliberately vulnerable DVWA. Nmap identified SSH and an HTTP port, with database access not published to the host. Work included STRIDE trust-boundary modelling. Results are training observations, not a third-party penetration test. AI assistance contributed to set-up, troubleshooting and reporting. No credentials or vulnerable live services are provided.

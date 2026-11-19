@@ -1,0 +1,51 @@
+configure terminal
+interface GigabitEthernet0/0
+no shutdown
+interface GigabitEthernet0/0.15
+encapsulation dot1Q 15
+ip address 10.10.10.161 255.255.255.224
+ip nat inside
+interface GigabitEthernet0/0.30
+encapsulation dot1Q 30
+ip address 10.10.10.193 255.255.255.192
+ip nat inside
+interface GigabitEthernet0/0.45
+encapsulation dot1Q 45 native
+ip address 10.10.10.129 255.255.255.240
+ip nat inside
+interface GigabitEthernet0/0.60
+encapsulation dot1Q 60
+ip address 10.10.10.145 255.255.255.240
+ip nat inside
+interface Serial0/0/0
+ip nat inside
+interface Serial0/0/1
+ip nat inside
+interface Serial0/1/0
+ip nat outside
+exit
+ip dhcp excluded-address 10.10.10.193
+ip dhcp pool LAN
+network 10.10.10.192 255.255.255.192
+default-router 10.10.10.193
+exit
+router rip
+version 2
+network 10.0.0.0
+no auto-summary
+passive-interface GigabitEthernet0/0
+passive-interface GigabitEthernet0/0.15
+passive-interface GigabitEthernet0/0.30
+passive-interface GigabitEthernet0/0.45
+passive-interface GigabitEthernet0/0.60
+passive-interface Serial0/1/0
+exit
+ip route 0.0.0.0 0.0.0.0 Serial0/1/0
+access-list 1 permit 10.10.10.0 0.0.0.255
+ip nat inside source static 10.10.10.162 198.133.219.130
+ip nat pool SNE_POOL 198.133.219.128 198.133.219.129 netmask 255.255.255.252
+ip nat inside source list 1 pool SNE_POOL overload
+end
+copy running-config startup-config
+
+

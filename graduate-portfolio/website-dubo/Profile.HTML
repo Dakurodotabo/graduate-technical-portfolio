@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Profile</title>
+    <link rel="stylesheet" href="./Profile.CSS" />
+</head>
+<body>
+    <header class="banner">
+        <a href="Home.HTML" class="logo-link">
+            <img src="./Banner PNG.png" alt="Home" class="logo" />
+        </a>
+        <nav class="main-nav">
+            <ul>
+                <li><a href="Home.HTML">Home</a></li>
+                <li><a href="About.HTML">About</a></li>
+                <li><a href="Booking.HTML">Booking</a></li>
+                <li><a href="Forum.HTML">Forum</a></li>
+                <li class="user-dropdown">
+                    <img src="user-icon.png" alt="User" class="user-icon" id="user-icon" />
+                    <div class="dropdown-content" id="dropdown-content">
+                        <a href="Login.HTML" id="login-link">Login</a>
+                        <a href="Signup.HTML" id="signup-link">Sign Up</a>
+                        <a href="Profile.HTML" id="profile-link">Profile</a>
+                        <a href="#" id="logout-link" style="display:none">Logout</a>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+        <script>
+          document.addEventListener("DOMContentLoaded", () => {
+            const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+            const profileLink = document.getElementById("profile-link");
+            const logoutLink = document.getElementById("logout-link");
+            const loginLink = document.getElementById("login-link");
+            const signupLink = document.getElementById("signup-link");
+            const userIcon = document.getElementById("user-icon");
+            const dropdownContent = document.getElementById("dropdown-content");
+
+            if (currentUser) {
+              profileLink.style.display = "block";
+              logoutLink.style.display = "block";
+              loginLink.style.display = "none";
+              signupLink.style.display = "none";
+              if (currentUser.profile_picture) {
+                userIcon.src = currentUser.profile_picture;
+              } else {
+                userIcon.src = "user-icon.png";
+              }
+            } else {
+              profileLink.style.display = "none";
+              logoutLink.style.display = "none";
+              loginLink.style.display = "block";
+              signupLink.style.display = "block";
+              userIcon.src = "user-icon.png";
+            }
+
+            // Toggle dropdown on user icon click
+            userIcon.addEventListener("click", () => {
+              if (dropdownContent.style.display === "block") {
+                dropdownContent.style.display = "none";
+              } else {
+                dropdownContent.style.display = "block";
+              }
+            });
+
+            // Close dropdown if clicked outside
+            document.addEventListener("click", (event) => {
+              if (
+                !userIcon.contains(event.target) &&
+                !dropdownContent.contains(event.target)
+              ) {
+                dropdownContent.style.display = "none";
+              }
+            });
+          });
+        </script>
+        <script src="auth.js"></script>
+    </header>
+    <main>
+        <div class="profile-container">
+            <h2>Profile Picture</h2>
+            <div class="profile-picture-container">
+                <img id="profile-picture" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNTAiIGhlaWdodD0iMTUwIiB2aWV3Qm94PSIwIDAgMTUwIDE1MCI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0iI2VlZSIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBkb21pbmFudC1iYXNlbGluZT0ibWlkZGxlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiM2NjYiPlByb2ZpbGUgUGljdHVyZTwvdGV4dD48L3N2Zz4=" alt="Profile Picture" class="profile-picture">
+                <form id="profile-picture-form">
+                    <input type="file" id="profile-picture-input" accept="image/*">
+                    <button type="submit">Upload Picture</button>
+                </form>
+            </div>
+            <script>
+                document.addEventListener('DOMContentLoaded', () => {
+                    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+                    const userIcon = document.getElementById('user-icon');
+                    const profilePicture = document.getElementById('profile-picture');
+                    const profilePictureForm = document.getElementById('profile-picture-form');
+                    const profilePictureInput = document.getElementById('profile-picture-input');
+
+                    if (currentUser && currentUser.profile_picture) {
+                        if (userIcon) {
+                            userIcon.src = currentUser.profile_picture;
+                        }
+                        if (profilePicture) {
+                            profilePicture.src = currentUser.profile_picture;
+                        }
+                    } else {
+                        if (userIcon) {
+                            userIcon.src = 'uploads/Default Profile.jpg';
+                        }
+                        if (profilePicture) {
+                            profilePicture.src = 'uploads/Default Profile.jpg';
+                        }
+                    }
+
+                    profilePictureForm.addEventListener('submit', async (e) => {
+                        e.preventDefault();
+                        if (!profilePictureInput.files.length) {
+                            alert('Please select a file to upload.');
+                            return;
+                        }
+                        const file = profilePictureInput.files[0];
+                        const formData = new FormData();
+                        formData.append('profile_picture', file);
+                        formData.append('userId', currentUser ? currentUser.id : '');
+
+                        try {
+                            const response = await fetch('/api/profile/picture', {
+                                method: 'POST',
+                                body: formData
+                            });
+                            if (!response.ok) {
+                                const errorData = await response.json();
+                                alert('Upload failed: ' + (errorData.error || 'Unknown error'));
+                                return;
+                            }
+                            const data = await response.json();
+                            // Update localStorage and UI
+                            if (currentUser) {
+                                currentUser.profile_picture = data.profile_picture;
+                                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                                if (userIcon) userIcon.src = data.profile_picture;
+                                if (profilePicture) profilePicture.src = data.profile_picture;
+                            }
+                            alert('Profile picture updated successfully.');
+                        } catch (error) {
+                            alert('Upload error: ' + error.message);
+                        }
+                    });
+                });
+            </script>
+
+            <h2>User Information</h2>
+            <div class="user-info">
+                <p>Name: <span id="user-name"></span></p>
+                <p>Email: <span id="user-email"></span></p>
+            </div>
+
+            <h2>Membership Details</h2>
+            <div class="membership-info">
+                <p>Plan: <span id="membership-plan"></span></p>
+                <p>Training Hours: <span id="training-hours"></span></p>
+                <p>Trainer: <span id="trainer-name"></span></p>
+                <p>Next Session: <span id="next-session"></span></p>
+                <p>Status: <span id="membership-status"></span></p>
+                <button id="cancel-membership-button" style="display:none;">Cancel Membership</button>
+            </div>
+
+            <h2>Change Password</h2>
+            <form id="change-password-form">
+                <div>
+                    <label for="current-password">Current Password:</label>
+                    <input type="password" id="current-password" required>
+                </div>
+                <div>
+                    <label for="new-password">New Password:</label>
+                    <input type="password" id="new-password" required>
+                </div>
+                <div>
+                    <label for="confirm-password">Confirm New Password:</label>
+                    <input type="password" id="confirm-password" required>
+                </div>
+                <button type="submit">Change Password</button>
+            </form>
+        </div>
+    </main>
+    <footer class="site-footer">
+        <div class="footer-container">
+            <div class="footer-section contact-info">
+                <h3>Contact Us</h3>
+                <p><span class="label">Phone:</span> <a href="tel:+1234567890">+44 2734 293655</a></p>
+                <p><span class="label">Email:</span> <a href="mailto:info@example.com">DoBu@gmail.co.uk</a></p>
+            </div>
+            <div class="footer-section page-links">
+                <h3>Pages</h3>
+                <ul>
+                    <li><a href="Home.HTML">Home</a></li>
+                    <li><a href="About.HTML">About</a></li>
+                    <li><a href="Booking.HTML">Booking</a></li>
+                    <li><a href="Forum.HTML">Forum</a></li>
+                </ul>
+            </div>
+            <div class="footer-section social-media">
+                <h3>Follow Us</h3>
+                <ul class="social-links">
+                    <li><a href="https://facebook.com" target="_blank" rel="noopener noreferrer"><img src="uploads/Fakebook.png?v=1" alt="Facebook Logo" class="social-logo" /></a></li>
+                    <li><a href="https://twitter.com" target="_blank" rel="noopener noreferrer"><img src="uploads/X.webp?v=1" alt="Twitter Logo" class="social-logo" /></a></li>
+                    <li><a href="https://instagram.com" target="_blank" rel="noopener noreferrer"><img src="uploads/instagram.webp?v=1" alt="Instagram Logo" class="social-logo" /></a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

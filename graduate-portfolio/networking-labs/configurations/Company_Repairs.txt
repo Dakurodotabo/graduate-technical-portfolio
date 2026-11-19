@@ -1,0 +1,24 @@
+S1 (privileged EXEC)
+configure terminal
+interface FastEthernet0/5
+ switchport trunk allowed vlan 20,30,40,1000
+interface Vlan20
+ ip address 10.20.0.2 255.255.255.0
+ no shutdown
+interface range GigabitEthernet0/1-2
+ switchport mode access
+ switchport access vlan 999
+ shutdown
+end
+copy running-config startup-config
+
+S2 (privileged EXEC)
+configure terminal
+interface FastEthernet0/18
+ switchport mode access
+interface range GigabitEthernet0/1-2
+ switchport mode access
+ switchport access vlan 999
+ shutdown
+end
+copy running-config startup-config

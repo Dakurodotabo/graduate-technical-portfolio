@@ -1,0 +1,12 @@
+node_modules/
+backend/users.json
+backend/posts.json
+backend/uploads/*
+!backend/uploads/.gitkeep
+!backend/uploads/Default Profile.jpg
+!backend/uploads/Fakebook.png
+!backend/uploads/X.webp
+!backend/uploads/instagram.webp
+.env
+*.pem
+*.key

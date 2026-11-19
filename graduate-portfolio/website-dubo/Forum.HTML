@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Forum</title>
+    <link rel="stylesheet" href="Home.CSS" />
+    <link rel="stylesheet" href="footer-styles.css" />
+    <link rel="stylesheet" href="Forum.CSS" />
+</head>
+<body>
+    <header class="banner">
+        <a href="Home.HTML" class="logo-link">
+            <img src="./Banner PNG.png" alt="Home" class="logo" />
+        </a>
+        <nav class="main-nav">
+            <ul>
+                <li><a href="Home.HTML">Home</a></li>
+                <li><a href="About.HTML">About</a></li>
+                <li><a href="Booking.HTML">Booking</a></li>
+                <li><a href="Forum.HTML">Forum</a></li>
+                <li class="user-dropdown">
+                    <img src="uploads/Default Profile.jpg" alt="User" class="user-icon" id="user-icon" />
+                    <div class="dropdown-content" id="dropdown-content">
+                        <a href="Login.HTML" id="login-link">Login</a>
+                        <a href="Signup.HTML" id="signup-link">Sign Up</a>
+                        <a href="Profile.HTML" id="profile-link">Profile</a>
+                        <a href="#" id="logout-link" style="display:none">Logout</a>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+        <script>
+          document.addEventListener("DOMContentLoaded", () => {
+            const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+            const profileLink = document.getElementById("profile-link");
+            const logoutLink = document.getElementById("logout-link");
+            const loginLink = document.getElementById("login-link");
+            const signupLink = document.getElementById("signup-link");
+            const userIcon = document.getElementById("user-icon");
+            const dropdownContent = document.getElementById("dropdown-content");
+
+            if (currentUser) {
+              profileLink.style.display = "block";
+              logoutLink.style.display = "block";
+              loginLink.style.display = "none";
+              signupLink.style.display = "none";
+              if (currentUser.profile_picture) {
+                userIcon.src = currentUser.profile_picture;
+              } else {
+                userIcon.src = "uploads/Default Profile.jpg";
+              }
+            } else {
+              profileLink.style.display = "none";
+              logoutLink.style.display = "none";
+              loginLink.style.display = "block";
+              signupLink.style.display = "block";
+              userIcon.src = "uploads/Default Profile.jpg";
+            }
+
+            // Toggle dropdown on user icon click
+            userIcon.addEventListener("click", () => {
+              if (dropdownContent.style.display === "block") {
+                dropdownContent.style.display = "none";
+              } else {
+                dropdownContent.style.display = "block";
+              }
+            });
+
+            // Close dropdown if clicked outside
+            document.addEventListener("click", (event) => {
+              if (
+                !userIcon.contains(event.target) &&
+                !dropdownContent.contains(event.target)
+              ) {
+                dropdownContent.style.display = "none";
+              }
+            });
+          });
+        </script>
+        <script src="auth.js"></script>
+    </header>
+    <main>
+        <h1>Forum</h1>
+        <section id="post-creation">
+        <form id="post-form" enctype="multipart/form-data">
+            <input type="text" id="post-title" placeholder="Post Title" required />
+            <div id="content-upload-container">
+                <textarea id="post-content" placeholder="Write your post here... You can include URLs for images, videos, gifs, and links." required></textarea>
+                <label for="image-upload" class="upload-label" title="Upload Images">&#128247;</label>
+                <input type="file" id="image-upload" accept="image/*" multiple style="display:none" />
+            </div>
+            <div id="image-preview-container"></div>
+            <button type="submit">Add Post</button>
+        </form>
+        </section>
+        <section id="posts" aria-live="polite" aria-label="User posts" tabindex="0">
+            <!-- User posts will appear here -->
+        </section>
+    </main>
+    <footer class="site-footer">
+        <div class="footer-container">
+            <div class="footer-section contact-info">
+                <h3>Contact Us</h3>
+                <p><span class="label">Phone:</span> <a href="tel:+1234567890">+44 2734 293655</a></p>
+                <p><span class="label">Email:</span> <a href="mailto:info@example.com">DoBu@gmail.co.uk</a></p>
+            </div>
+            <div class="footer-section page-links">
+                <h3>Pages</h3>
+                <ul>
+                    <li><a href="Home.HTML">Home</a></li>
+                    <li><a href="About.HTML">About</a></li>
+                    <li><a href="Booking.HTML">Booking</a></li>
+                    <li><a href="Forum.HTML">Forum</a></li>
+                </ul>
+            </div>
+            <div class="footer-section social-media">
+                <h3>Follow Us</h3>
+                <ul class="social-links">
+                    <li><a href="https://facebook.com" target="_blank" rel="noopener noreferrer"><img src="uploads/Fakebook.png?v=1" alt="Facebook Logo" class="social-logo" /></a></li>
+                    <li><a href="https://twitter.com" target="_blank" rel="noopener noreferrer"><img src="uploads/X.webp?v=1" alt="Twitter Logo" class="social-logo" /></a></li>
+                    <li><a href="https://instagram.com" target="_blank" rel="noopener noreferrer"><img src="uploads/instagram.webp?v=1" alt="Instagram Logo" class="social-logo" /></a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+    <script>
+        async function fetchPosts() {
+            if (window.location.protocol === 'file:') {
+                // Running from file:// protocol, cannot fetch API
+                const postSection = document.getElementById('posts');
+                postSection.innerHTML = '<p style="color:red;">API calls are disabled when opening the file directly. Please run the backend server and open this page via http://127.0.0.1:3000/Forum.HTML for full functionality.</p>';
+                return;
+            }
+            const response = await fetch('/api/posts', {
+                headers: {
+                    'x-user-id': localStorage.getItem('currentUserId') || ''
+                }
+            });
+            if (response.ok) {
+                const posts = await response.json();
+                displayPosts(posts);
+            }
+        }
+
+        function parseContent(content) {
+            // Escape HTML special chars except URLs
+            const div = document.createElement('div');
+            div.textContent = content;
+            let escaped = div.innerHTML;
+
+            // Regex patterns for URLs
+            const urlPattern = /(https?:\/\/[^\s]+)/g;
+
+            // Replace URLs with appropriate elements
+            escaped = escaped.replace(urlPattern, function(url) {
+                // Check for image extensions
+                if (url.match(/\.(jpeg|jpg|gif|png|svg)$/i)) {
+                    return `<img src="${url}" alt="User posted image" />`;
+                }
+                // Check for video extensions
+                if (url.match(/\.(mp4|webm|ogg)$/i)) {
+                    return `<video controls src="${url}"></video>`;
+                }
+                // Otherwise, treat as hyperlink
+                return `<a href="${url}" target="_blank" rel="noopener noreferrer">${url}</a>`;
+            });
+            return escaped;
+        }
+
+        function createPostElement(post, currentUser) {
+            const postDiv = document.createElement('div');
+            postDiv.className = 'post';
+
+            const postTitle = document.createElement('div');
+            postTitle.className = 'post-title';
+            postTitle.textContent = post.title;
+
+            const postUser = document.createElement('div');
+            postUser.className = 'post-user';
+            postUser.textContent = `Posted by: ${post.userName}`;
+
+            const postContent = document.createElement('div');
+            postContent.className = 'post-content';
+            postContent.innerHTML = parseContent(post.content);
+
+            // Append images
+            if (post.images && post.images.length > 0) {
+                post.images.forEach(src => {
+                    const img = document.createElement('img');
+                    // Prepend backend origin to image src if not absolute URL
+                    if (!src.startsWith('http://') && !src.startsWith('https://')) {
+                        img.src = '' + src;
+                    } else {
+                        img.src = src;
+                    }
+                    img.alt = 'User uploaded image';
+                    postContent.appendChild(img);
+                });
+            }
+
+            postDiv.appendChild(postTitle);
+            postDiv.appendChild(postUser);
+            postDiv.appendChild(postContent);
+
+            // Add delete button if current user is admin or post owner
+            if (currentUser && (currentUser.role === 'admin' || currentUser.id === post.userId)) {
+                const deleteBtn = document.createElement('button');
+                deleteBtn.textContent = 'Delete';
+                deleteBtn.className = 'delete-btn';
+                deleteBtn.addEventListener('click', () => {
+                    deletePost(post.id);
+                });
+                postDiv.appendChild(deleteBtn);
+            }
+
+            return postDiv;
+        }
+
+        function displayPosts(posts) {
+            const postSection = document.getElementById('posts');
+            postSection.innerHTML = '';
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            posts.forEach(post => {
+                const postElement = createPostElement(post, currentUser);
+                postSection.appendChild(postElement);
+            });
+        }
+
+        async function deletePost(postId) {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (!currentUser) {
+                alert('You must be logged in to delete posts.');
+                return;
+            }
+        const response = await fetch(`/api/posts/${postId}`, {
+            method: 'DELETE',
+            headers: {
+                'x-user-id': currentUser.id
+            }
+        });
+            if (response.ok) {
+                fetchPosts();
+            } else {
+                const error = await response.json();
+                alert(`Error deleting post: ${error.error}`);
+            }
+        }
+
+        document.getElementById('image-upload').addEventListener('change', function(event) {
+            const previewContainer = document.getElementById('image-preview-container');
+            previewContainer.innerHTML = '';
+            const files = event.target.files;
+            if (files.length > 0) {
+                for (let i = 0; i < files.length; i++) {
+                    const file = files[i];
+                    if (file.type.startsWith('image/')) {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            const img = document.createElement('img');
+                            img.src = e.target.result;
+                            img.alt = 'Image preview';
+                            img.className = 'preview-image';
+                            previewContainer.appendChild(img);
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                }
+            }
+            // Keep the files for form submission
+        });
+
+        document.getElementById('post-form').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            if (window.location.protocol === 'file:') {
+                alert('Post submission is disabled when opening the file directly. Please run the backend server and open this page via http://127.0.0.1:3000/Forum.HTML for full functionality.');
+                return;
+            }
+            const titleInput = document.getElementById('post-title');
+            const contentInput = document.getElementById('post-content');
+            const imageInput = document.getElementById('image-upload');
+            const title = titleInput.value.trim();
+            const content = contentInput.value.trim();
+            if (!title || !content) {
+                alert('Title and content are required.');
+                return;
+            }
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (!currentUser) {
+                alert('You must be logged in to post.');
+                return;
+            }
+            const formData = new FormData();
+            formData.append('title', title);
+            formData.append('content', content);
+            for (let i = 0; i < imageInput.files.length; i++) {
+                formData.append('images', imageInput.files[i]);
+            }
+            const response = await fetch('/api/posts', {
+                method: 'POST',
+                headers: {
+                    'x-user-id': currentUser.id
+                },
+                body: formData
+            });
+            if (response.ok) {
+                titleInput.value = '';
+                contentInput.value = '';
+                imageInput.value = '';
+                fetchPosts();
+            } else {
+                const error = await response.json();
+                alert(`Error adding post: ${error.error}`);
+            }
+        });
+
+        // Load posts on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchPosts();
+        });
+    </script>
+</body>
+</html>

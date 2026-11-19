@@ -1,0 +1,15 @@
+{
+  "name": "dubo-martial-arts-coursework-demo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Local demonstration only; coursework authentication is not production-grade",
+  "scripts": {
+    "start": "node backend/server.js",
+    "test": "node tests/smoke-test.js"
+  },
+  "dependencies": {
+    "express": "4.21.2",
+    "multer": "^2.0.2",
+    "bcryptjs": "2.4.3"
+  }
+}
